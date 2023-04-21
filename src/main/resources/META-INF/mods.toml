@@ -1,0 +1,32 @@
+modLoader="kotlinforforge" #mandatory
+loaderVersion="[3,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="MPL2.0"
+
+[[mods]]
+modId = "cobblemonmikeeffects"
+version = "1.0.0"
+displayName = "Cobblemon Mike Extra Effects"
+description = '''
+This mod was created to allow more Minecrafts to be provided from Pokémons. The pokémon list could be updated in a datapack.
+'''
+
+[[dependencies.cobblemonmikeeffects]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.2]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.cobblemonmikeeffects]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.cobblemonmikeeffects]]
+modId = "cobblemon"
+mandatory = true
+versionRange = "[1.2.0,2.0)"
+ordering = "NONE"
+side = "BOTH"
