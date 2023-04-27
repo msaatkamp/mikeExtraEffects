@@ -6,27 +6,29 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.mikeretriever.extraeffects.effects
+package com.mikeretriever.extraeffects.shoulderEffects
 
 import com.cobblemon.mod.common.api.pokemon.effect.ShoulderEffect
 import com.cobblemon.mod.common.pokemon.Pokemon
+import com.mikeretriever.extraeffects.statusEffects.ShoulderStatusEffect
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import java.time.Instant
 import java.util.UUID
 
-class DolphinGraceEffect : ShoulderEffect {
+class SaturationEffect : ShoulderEffect {
 
     private val lastTimeUsed: MutableMap<UUID, Long> = mutableMapOf()
     private val cooldown: Int = 120 // 2 minutes in seconds
-    private val buffName: String = "Dolphin Grace"
-    private val buffDurationSeconds: Int = 300
+    private val buffName: String = "Saturation"
+    private val buffDurationSeconds: Int = 10
 
     override fun applyEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<DolphinGraceShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<SaturationShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
+
         val timeDiff = if (lastTimeUse != null) currentTime - lastTimeUse else Long.MAX_VALUE
 
         if (effect != null) {
@@ -40,7 +42,7 @@ class DolphinGraceEffect : ShoulderEffect {
                 lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond + buffDurationSeconds
 
                 player.addStatusEffect(
-                    DolphinGraceShoulderStatusEffect(
+                    SaturationShoulderStatusEffect(
                         mutableListOf(pokemon.uuid),
                         buffName,
                         buffDurationSeconds
@@ -56,18 +58,18 @@ class DolphinGraceEffect : ShoulderEffect {
     }
 
     override fun removeEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<DolphinGraceShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<SaturationShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
-
-        if(lastTimeUse?.let {it > currentTime} == true) {
-            lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond
-        }
+        
         if (effect != null) {
+            if(lastTimeUse?.let {it > currentTime} == true) {
+                lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond
+            }
             effect.pokemonIds.remove(pokemon.uuid)
         }
     }
  
-    class DolphinGraceShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.DOLPHINS_GRACE, duration * 20, buffName ) {}
+    class SaturationShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.SATURATION, duration * 20, buffName ) {}
 
 }

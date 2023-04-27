@@ -6,25 +6,26 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.mikeretriever.extraeffects.effects
+package com.mikeretriever.extraeffects.shoulderEffects
 
 import com.cobblemon.mod.common.api.pokemon.effect.ShoulderEffect
 import com.cobblemon.mod.common.pokemon.Pokemon
+import com.mikeretriever.extraeffects.statusEffects.ShoulderStatusEffect
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import java.time.Instant
 import java.util.UUID
 
-class SaturationEffect : ShoulderEffect {
+class RegenerationEffect : ShoulderEffect {
 
     private val lastTimeUsed: MutableMap<UUID, Long> = mutableMapOf()
     private val cooldown: Int = 120 // 2 minutes in seconds
-    private val buffName: String = "Saturation"
+    private val buffName: String = "Regeneration"
     private val buffDurationSeconds: Int = 10
 
     override fun applyEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<SaturationShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<RegenerationShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
 
@@ -41,7 +42,7 @@ class SaturationEffect : ShoulderEffect {
                 lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond + buffDurationSeconds
 
                 player.addStatusEffect(
-                    SaturationShoulderStatusEffect(
+                    RegenerationShoulderStatusEffect(
                         mutableListOf(pokemon.uuid),
                         buffName,
                         buffDurationSeconds
@@ -57,7 +58,7 @@ class SaturationEffect : ShoulderEffect {
     }
 
     override fun removeEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<SaturationShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<RegenerationShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
         
@@ -69,6 +70,6 @@ class SaturationEffect : ShoulderEffect {
         }
     }
  
-    class SaturationShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.SATURATION, duration * 20, buffName ) {}
+    class RegenerationShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.REGENERATION, duration * 20, buffName ) {}
 
 }

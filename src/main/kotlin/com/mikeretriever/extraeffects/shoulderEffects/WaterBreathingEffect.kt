@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.mikeretriever.extraeffects.effects
+package com.mikeretriever.extraeffects.shoulderEffects
 
 import com.cobblemon.mod.common.api.pokemon.effect.ShoulderEffect
 import com.cobblemon.mod.common.pokemon.Pokemon
@@ -15,19 +15,18 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import java.time.Instant
 import java.util.UUID
+import com.mikeretriever.extraeffects.statusEffects.ShoulderStatusEffect
 
-class InvisibilityEffect : ShoulderEffect {
-
+class WaterBreathingEffect : ShoulderEffect {
     private val lastTimeUsed: MutableMap<UUID, Long> = mutableMapOf()
     private val cooldown: Int = 120 // 2 minutes in seconds
-    private val buffName: String = "Invisibility"
-    private val buffDurationSeconds: Int = 180
+    private val buffName: String = "Water Breathing"
+    private val buffDurationSeconds: Int = 300
 
     override fun applyEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<InvisibilityShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<WaterBreathingShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
-
         val timeDiff = if (lastTimeUse != null) currentTime - lastTimeUse else Long.MAX_VALUE
 
         if (effect != null) {
@@ -41,7 +40,7 @@ class InvisibilityEffect : ShoulderEffect {
                 lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond + buffDurationSeconds
 
                 player.addStatusEffect(
-                    InvisibilityShoulderStatusEffect(
+                    WaterBreathingShoulderStatusEffect(
                         mutableListOf(pokemon.uuid),
                         buffName,
                         buffDurationSeconds
@@ -57,10 +56,10 @@ class InvisibilityEffect : ShoulderEffect {
     }
 
     override fun removeEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<InvisibilityShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<WaterBreathingShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
-        
+
         if (effect != null) {
             if(lastTimeUse?.let {it > currentTime} == true) {
                 lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond
@@ -68,7 +67,7 @@ class InvisibilityEffect : ShoulderEffect {
             effect.pokemonIds.remove(pokemon.uuid)
         }
     }
- 
-    class InvisibilityShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.INVISIBILITY, duration * 20, buffName ) {}
+
+    class WaterBreathingShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.WATER_BREATHING, duration * 20, buffName ) {}
 
 }

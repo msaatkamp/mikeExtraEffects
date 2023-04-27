@@ -34,7 +34,7 @@ repositories {
 dependencies {
     minecraft("net.minecraft:minecraft:1.19.2")
     implementation("thedarkcolour:kotlinforforge:3.10.0")
-    forge("net.minecraftforge:forge:1.19.2-43.2.0")
+    forge("net.minecraftforge:forge:1.19.2-43.2.8")
     mappings("net.fabricmc:yarn:1.19.2+build.4:v2")
 
     modImplementation("dev.architectury", "architectury-forge", "6.5.69")

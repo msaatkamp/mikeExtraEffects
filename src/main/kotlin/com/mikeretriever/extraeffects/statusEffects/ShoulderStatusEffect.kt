@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.mikeretriever.extraeffects.effects
+package com.mikeretriever.extraeffects.statusEffects
 
 import com.cobblemon.mod.common.util.DataKeys.POKEMON_UUID
 import net.minecraft.entity.LivingEntity
@@ -21,9 +21,9 @@ import java.util.UUID
 abstract class ShoulderStatusEffect(
     internal val pokemonIds: MutableList<UUID>,
     private val effect: StatusEffect,
-    private val effectDurationSeconds: Int,
+    private var effectDurationSeconds: Int,
     private val buffName: String
-) : StatusEffectInstance(effect, effectDurationSeconds, 0, true, true, false) {
+) : StatusEffectInstance(effect, effectDurationSeconds, 0, false, false, false) {
     override fun writeNbt(nbt: NbtCompound): NbtCompound {
         super.writeNbt(nbt)
         nbt.putInt("id", -999)
@@ -35,16 +35,28 @@ abstract class ShoulderStatusEffect(
 
         val hasShoulderedPokemon = isShoulderedPokemon(entity.shoulderEntityLeft) || isShoulderedPokemon(entity.shoulderEntityRight)
 
+        if(duration % 20 == 0) {
+            entity.sendMessage(Text.literal("Keeping effect: $buffName. StillInShoulder? $hasShoulderedPokemon"))
+        }
+
         if(duration == 200 && duration % 20 === 0 ) {
             entity.sendMessage(Text.literal("$buffName will be worn out in ${duration / 20} seconds.."))
+        }
+
+        if(duration == 20*290) {
+            entity.sendMessage(Text.literal("Your $buffName is being removed early."))
+            entity.activeStatusEffects.remove(this.effect)
         }
 
         if (duration == 20) { // Last Sec Warning
             entity.sendMessage(Text.literal("Your $buffName is fading out."))
         }
+
         if (!hasShoulderedPokemon) {
+            entity.sendMessage(Text.literal("Trying to remove effect: $buffName"))
             if (duration >= 0) {
-                entity.sendMessage(Text.literal("Your pokemon $buffName was removed."))
+                duration = 0
+                entity.sendMessage(Text.literal("Starting to remove . . . ."))
             }
         }
 

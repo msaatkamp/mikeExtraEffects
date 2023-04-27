@@ -1,10 +1,9 @@
 package com.mikeretriever.extraeffects;
 
-import dev.architectury.platform.forge.EventBuses
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent
-import com.mikeretriever.extraeffects.effects.*
+import com.mikeretriever.extraeffects.shoulderEffects.*
 import com.cobblemon.mod.common.api.pokemon.effect.ShoulderEffectRegistry
 
 @Mod("cobblemonmikeeffects")
@@ -13,7 +12,6 @@ class CobblemonMikeExtraEffects {
 
     init {
         with(thedarkcolour.kotlinforforge.forge.MOD_BUS) {
-            EventBuses.registerModEventBus("cobblemonmikeeffects", this)
             addListener(this@CobblemonMikeExtraEffects::initialize)
             addListener(this@CobblemonMikeExtraEffects::serverInit)
         }
@@ -60,6 +58,5 @@ class CobblemonMikeExtraEffects {
 
     fun initialize(event: FMLCommonSetupEvent) {
         System.out.println("Cobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/n Cobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/nCobblemon Mike Extra Effects Init. /r/n");
-
     }
 }

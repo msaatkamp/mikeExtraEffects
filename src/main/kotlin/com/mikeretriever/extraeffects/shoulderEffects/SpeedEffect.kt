@@ -6,25 +6,26 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.mikeretriever.extraeffects.effects
+package com.mikeretriever.extraeffects.shoulderEffects
 
 import com.cobblemon.mod.common.api.pokemon.effect.ShoulderEffect
 import com.cobblemon.mod.common.pokemon.Pokemon
+import com.mikeretriever.extraeffects.statusEffects.ShoulderStatusEffect
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import java.time.Instant
 import java.util.UUID
 
-class HasteEffect : ShoulderEffect {
+class SpeedEffect : ShoulderEffect {
 
     private val lastTimeUsed: MutableMap<UUID, Long> = mutableMapOf()
     private val cooldown: Int = 120 // 2 minutes in seconds
-    private val buffName: String = "Haste"
+    private val buffName: String = "Speed"
     private val buffDurationSeconds: Int = 300
 
     override fun applyEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<HasteShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<SpeedShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
 
@@ -41,7 +42,7 @@ class HasteEffect : ShoulderEffect {
                 lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond + buffDurationSeconds
 
                 player.addStatusEffect(
-                    HasteShoulderStatusEffect(
+                    SpeedShoulderStatusEffect(
                         mutableListOf(pokemon.uuid),
                         buffName,
                         buffDurationSeconds
@@ -57,7 +58,7 @@ class HasteEffect : ShoulderEffect {
     }
 
     override fun removeEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<HasteShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<SpeedShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
         
@@ -69,6 +70,6 @@ class HasteEffect : ShoulderEffect {
         }
     }
  
-    class HasteShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.HASTE, duration * 20, buffName ) {}
+    class SpeedShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.SPEED, duration * 20, buffName ) {}
 
 }

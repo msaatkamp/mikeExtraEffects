@@ -6,25 +6,26 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.mikeretriever.extraeffects.effects
+package com.mikeretriever.extraeffects.shoulderEffects
 
 import com.cobblemon.mod.common.api.pokemon.effect.ShoulderEffect
 import com.cobblemon.mod.common.pokemon.Pokemon
+import com.mikeretriever.extraeffects.statusEffects.ShoulderStatusEffect
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import java.time.Instant
 import java.util.UUID
 
-class SlowFallEffect : ShoulderEffect {
+class NightVisionEffect : ShoulderEffect {
 
     private val lastTimeUsed: MutableMap<UUID, Long> = mutableMapOf()
     private val cooldown: Int = 120 // 2 minutes in seconds
-    private val buffName: String = "Slow Fall"
+    private val buffName: String = "Night Vision"
     private val buffDurationSeconds: Int = 300
 
     override fun applyEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<SlowFallShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<NightVisionShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
 
@@ -41,7 +42,7 @@ class SlowFallEffect : ShoulderEffect {
                 lastTimeUsed[pokemon.uuid] = Instant.now().epochSecond + buffDurationSeconds
 
                 player.addStatusEffect(
-                    SlowFallShoulderStatusEffect(
+                    NightVisionShoulderStatusEffect(
                         mutableListOf(pokemon.uuid),
                         buffName,
                         buffDurationSeconds
@@ -57,7 +58,7 @@ class SlowFallEffect : ShoulderEffect {
     }
 
     override fun removeEffect(pokemon: Pokemon, player: ServerPlayerEntity, isLeft: Boolean) {
-        val effect = player.statusEffects.filterIsInstance<SlowFallShoulderStatusEffect>().firstOrNull()
+        val effect = player.statusEffects.filterIsInstance<NightVisionShoulderStatusEffect>().firstOrNull()
         val lastTimeUse = lastTimeUsed[pokemon.uuid]
         val currentTime = Instant.now().epochSecond
         
@@ -68,7 +69,7 @@ class SlowFallEffect : ShoulderEffect {
             effect.pokemonIds.remove(pokemon.uuid)
         }
     }
-
-    class SlowFallShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.SLOW_FALLING, duration * 20, buffName ) {}
+ 
+    class NightVisionShoulderStatusEffect(pokemonIds: MutableList<UUID>, buffName: String, duration: Int) : ShoulderStatusEffect(pokemonIds, StatusEffects.NIGHT_VISION, duration * 20, buffName ) {}
 
 }
